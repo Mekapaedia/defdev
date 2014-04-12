@@ -1,4 +1,5 @@
-"-ansi -ggdb3 -pg -O0 -Wall -Wextra -pedantic -Wdeclaration-after-statement \
+#!/bin/bash
+echo "-ansi -ggdb3 -pg -O0 -Wall -Wextra -pedantic -Wdeclaration-after-statement \
 -Wshadow -Wpointer-arith -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes \
 -Wno-missing-braces -Wno-missing-field-initializers -Wformat=2 \
 -Wswitch-default -Wswitch-enum -Wcast-align -Wpointer-arith \

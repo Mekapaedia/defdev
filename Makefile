@@ -1,20 +1,30 @@
 CC=gcc
-DEVFLAGS=`echo devflags.txt`
-DEVCFLAGS=-c $(DEVFLAGS)
+DEVFLAGS=`sh devflags.sh`
+DEVCFLAGS=$(DEVFLAGS) -c
 DEVLDFLAGS=$(DEVFLAGS) -lgcov
+CFLAGS=-O2 -march=native -fomit-frame-pointer -c
+LDFLAGS=
 SRC=
 OBJ=$(SRC:.c=.o)
-EXE=geargui
+EXE=
 
-all: $(SRC) $(EXE) docs
+all: $(SRC) $(EXE)
+
+dev: docs $(SRC) $(EXE)
+CFLAGS := $(DEVCFLAGS)
+LDFLAGS := $(DEVLDFLAGS)
 
 $(EXE): $(OBJ)
-	$(CC) $(DEVLDFLAGS) $(OBJ) -o $@
+	$(CC) $(LDFLAGS) $(OBJ) -o $@
+
 %.o: %.c
-	$(CC) $(DEVCFLAGS) $< -o $@
+	$(CC) $(CFLAGS) $< -o $@
+
 docs:
-	rm docs.html
+	rm -f docs.html
 	doxygen
 	ln -s html/index.html docs.html
+
 clean:
-	rm -rf $(OBJ) $(EXE) *.gcno *.gcda *.gcov gmon.out html docs.html
+	rm -rf $(SRC:.c=.gcno) $(SRC:.c=.gcda) $(SRC:.c=.gcov) $(OBJ)
+	rm -rf html gmon.out docs.html $(EXE)
