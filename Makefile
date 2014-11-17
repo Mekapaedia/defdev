@@ -1,24 +1,20 @@
-CC=gcc
-DEVFLAGS=`sh devflags.sh`
-DEVCFLAGS=$(DEVFLAGS) -c
-DEVLDFLAGS=$(DEVFLAGS) -lgcov
-CFLAGS=-O2 -march=native -fomit-frame-pointer -c
-LDFLAGS=
-SRC=
-OBJ=$(SRC:.c=.o)
-EXE=
+SRC=test.c
+EXE=test
+EXTRACFLAGS=
+EXTRALDFLAGS=
+export SRC
+export EXE
+export EXTRACFLAGS
+export EXTRALDFLAGS
 
-all: $(SRC) $(EXE)
+all: debug
 
-dev: docs $(SRC) $(EXE)
-CFLAGS := $(DEVCFLAGS)
-LDFLAGS := $(DEVLDFLAGS)
 
-$(EXE): $(OBJ)
-	$(CC) $(LDFLAGS) $(OBJ) -o $@
+fast: phony
+	$(MAKE) -f Makefile.fast.gcc
 
-%.o: %.c
-	$(CC) $(CFLAGS) $< -o $@
+debug: phony docs
+	$(MAKE) -f Makefile.dev.gcc
 
 docs:
 	rm -f docs.html
@@ -26,5 +22,8 @@ docs:
 	ln -s html/index.html docs.html
 
 clean:
-	rm -rf $(SRC:.c=.gcno) $(SRC:.c=.gcda) $(SRC:.c=.gcov) $(OBJ)
-	rm -rf html gmon.out docs.html $(EXE)
+	rm -rf $(SRC:.c=.gcno) $(SRC:.c=.gcda) $(SRC:.c=.gcov) $(SRC:.c=.o)
+	rm -rf html gmon.out docs.html $(EXE) *.dyn *.dpi *.lock
+
+phony: 
+	true
