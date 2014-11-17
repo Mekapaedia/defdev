@@ -1,5 +1,5 @@
-SRC=test.c
-EXE=test
+SRC=
+EXE=
 EXTRACFLAGS=
 EXTRALDFLAGS=
 export SRC
