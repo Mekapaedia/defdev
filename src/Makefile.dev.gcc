@@ -1,0 +1,13 @@
+CC=gcc
+DEVFLAGS=-std=c99 -ggdb3 -pg -O0 -Wall -Wextra -pedantic 
+CFLAGS=$(DEVFLAGS) $(EXTRACFLAGS) -c
+LDFLAGS=$(DEVFLAGS) $(EXTRALDFLAGS) -lgcov
+OBJ=$(SRC:.c=.o)
+
+all: $(SRC) $(EXE)
+
+$(EXE): $(OBJ)
+	$(CC) $(OBJ) -o $@ $(LDFLAGS)
+
+%.o: %.c
+	$(CC) $(CFLAGS) $< -o $@

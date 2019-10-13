@@ -1,29 +1,21 @@
-SRC=
-EXE=
-EXTRACFLAGS=
-EXTRALDFLAGS=
-export SRC
-export EXE
-export EXTRACFLAGS
-export EXTRALDFLAGS
-
 all: debug
 
 
 fast: phony
-	$(MAKE) -f Makefile.fast.gcc
+	$(MAKE) -C src fast
 
-debug: phony docs
-	$(MAKE) -f Makefile.dev.gcc
+debug: phony
+	$(MAKE) -C src debug
+
+test: phony
+	$(MAKE) -C src test
 
 docs:
-	rm -f docs.html
-	doxygen
-	ln -s html/index.html docs.html
+	$(MAKE) -C src docs
 
 clean:
-	rm -rf $(SRC:.c=.gcno) $(SRC:.c=.gcda) $(SRC:.c=.gcov) $(SRC:.c=.o)
-	rm -rf html gmon.out docs.html $(EXE) *.dyn *.dpi *.lock
+	rm -rf $(EXE)
+	$(MAKE) -C src clean
 
 phony: 
 	true

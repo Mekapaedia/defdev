@@ -1,0 +1,16 @@
+CC=gcc
+EXTRATESTFILES=../test/alltests.c
+SRC+=$(EXTRATESTFILES)
+EXE=runalltests
+TESTFLAGS=-std=c99 -ggdb3 -pg -O0 -Wall -Wextra -pedantic -DTESTING
+CFLAGS=$(TESTFLAGS) $(EXTRACFLAGS) -c
+LDFLAGS=$(TESTFLAGS) $(EXTRALDFLAGS) -lgcov
+OBJ=$(SRC:.c=.o)
+
+all: $(SRC) $(EXE)
+
+$(EXE): $(OBJ)
+	$(CC) $(OBJ) -o $@ $(LDFLAGS)
+
+%.o: %.c
+	$(CC) $(CFLAGS) $< -o $@
